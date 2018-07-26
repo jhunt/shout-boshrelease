@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eux
+
+rm -f quicklisp-bundle.tar.gz
+tar -C ~ -czvf quicklisp-bundle.tar.gz quicklisp
+bosh add-blob quicklisp-bundle.tar.gz shout/quicklisp-bundle.tar.gz
+rm -f quicklisp-bundle.tar.gz

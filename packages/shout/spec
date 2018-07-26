@@ -1,0 +1,8 @@
+---
+name: shout
+dependencies:
+  - sbcl
+
+files:
+  - shout/**/*.cl
+  - shout/quicklisp-bundle.tar.gz

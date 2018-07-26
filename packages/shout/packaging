@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+mkdir -p $BOSH_INSTALL_TARGET
+cp shout/* $BOSH_INSTALL_TARGET/

@@ -1,0 +1,37 @@
+name: shout
+
+instance_groups:
+- name: shout
+  instances: 1
+  vm_type: default
+  stemcell: default
+  azs: [z1]
+  networks: [{name: default}]
+
+  jobs:
+  - name: shout
+    release: shout
+    properties:
+      slack:
+        webhook: ((slack_webhook))
+
+update:
+  canaries: 1
+  canary_watch_time: 1000-60000
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 1000-60000
+
+variables:
+  - name: slack_webhook
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+releases:
+- name: shout
+  version: latest
+  #url:  ...
+  #sha1: ...

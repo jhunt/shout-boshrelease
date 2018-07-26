@@ -1,0 +1,60 @@
+#!/bin/bash
+set -eu
+mkdir -p /var/vcap/sys/log/shout
+exec >> /var/vcap/sys/log/shout/shout.log 2>&1
+export PATH=$PATH:/var/vcap/packages/sbcl/bin
+
+pidfile=/var/vcap/sys/run/shout/shout.pid
+pids=
+if [[ -f $pidfile ]]; then
+  pids=$(cat $pidfile)
+fi
+
+case $1 in
+  start)
+    if test -n "$pids" && kill -0 $pids >/dev/null 2>&1; then
+      echo "[$(date)] shout seems to be running already (pid $pids, from $pidfile)!"
+      exit 1
+    fi
+
+    echo "[$(date)] expanding quicklisp supporting libraries"
+    rm -rf ~vcap/quicklisp
+    tar -C ~vcap -xzf /var/vcap/packages/shout/quicklisp-bundle.tar.gz
+
+    export SHOUT_BOTICON="<%= p('slack.icon') %>"
+    export SHOUT_BOTNAME="<%= p('slack.name') %>"
+    export SHOUT_WEBHOOK="<%= p('slack.webhook') %>"
+
+    echo "[$(date)] shout starting up (pid $$)"
+    echo $$ > $pidfile
+    exec chpst -u vcap:vcap \
+         sbcl --script /var/vcap/packages/shout/run.cl
+    ;;
+
+  stop)
+    if [[ -z "$pids" ]]; then
+      pids=$(pgrep shout)
+    fi
+
+    n=250
+    echo "[$(date)] sending shout procs ($pids) a SIGTERM..."
+    kill -TERM $pids || true
+    while test -n "$pids" && kill -0 $pids >/dev/null 2>&1; do
+      if [[ $n < 1 ]]; then
+        echo "[$(date)] shout is still running; sending a SIGKILL..."
+        kill -9 $pids || true
+        sleep 0.5
+        break
+      fi
+      sleep 0.1
+      n=$(( $n - 1 ))
+    done
+    rm -f $pidfile
+    ;;
+
+  *)
+    echo "Usage: shout {start|stop}"
+    ;;
+
+esac
+exit 0

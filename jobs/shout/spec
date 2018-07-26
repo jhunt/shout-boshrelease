@@ -1,0 +1,20 @@
+---
+name: shout
+packages:
+  - sbcl
+  - shout
+
+templates:
+  bin/shout: bin/shout
+
+properties:
+  slack.icon:
+    description: The URL to an icon to use for Slack notifications
+    default:     http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
+
+  slack.name:
+    description: The name to post Slack notifications as.
+    default:     Shout!Bot
+
+  slack.webhook:
+    description: The Slack webhook to post notifications via.
