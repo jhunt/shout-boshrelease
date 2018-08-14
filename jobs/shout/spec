@@ -5,16 +5,13 @@ packages:
   - shout
 
 templates:
-  bin/shout: bin/shout
+  bin/shout:          bin/shout
+  config/shout.rules: config/shout.rules
 
 properties:
-  slack.icon:
-    description: The URL to an icon to use for Slack notifications
-    default:     http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
+  port:
+    description: The TCP port to bind for incoming Shout! API requests.
+    default: 7109
 
-  slack.name:
-    description: The name to post Slack notifications as.
-    default:     Shout!Bot
-
-  slack.webhook:
-    description: The Slack webhook to post notifications via.
+  rules:
+    description: The Shout! notification dispatch rules.

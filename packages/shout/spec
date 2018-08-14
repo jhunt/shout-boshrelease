@@ -4,5 +4,5 @@ dependencies:
   - sbcl
 
 files:
-  - shout/**/*.cl
+  - shout/**/*.lisp
   - shout/quicklisp-bundle.tar.gz

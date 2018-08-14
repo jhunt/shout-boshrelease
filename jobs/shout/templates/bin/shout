@@ -4,16 +4,16 @@ mkdir -p /var/vcap/sys/log/shout
 exec >> /var/vcap/sys/log/shout/shout.log 2>&1
 export PATH=$PATH:/var/vcap/packages/sbcl/bin
 
-pidfile=/var/vcap/sys/run/shout/shout.pid
+export PID_FILE=/var/vcap/sys/run/shout/shout.pid
 pids=
-if [[ -f $pidfile ]]; then
-  pids=$(cat $pidfile)
+if [[ -f $PID_FILE ]]; then
+  pids=$(cat $PID_FILE)
 fi
 
 case $1 in
   start)
     if test -n "$pids" && kill -0 $pids >/dev/null 2>&1; then
-      echo "[$(date)] shout seems to be running already (pid $pids, from $pidfile)!"
+      echo "[$(date)] shout seems to be running already (pid $pids, from $PID_FILE)!"
       exit 1
     fi
 
@@ -21,14 +21,14 @@ case $1 in
     rm -rf ~vcap/quicklisp
     tar -C ~vcap -xzf /var/vcap/packages/shout/quicklisp-bundle.tar.gz
 
-    export SHOUT_BOTICON="<%= p('slack.icon') %>"
-    export SHOUT_BOTNAME="<%= p('slack.name') %>"
-    export SHOUT_WEBHOOK="<%= p('slack.webhook') %>"
+    export SHOUT_PORT="<%= p('port') %>"
+    export SHOUT_RULES="/var/vcap/jobs/shout/config/shout.rules"
+    export SHOUT_DATABASE="/var/vcap/store/shout/shout.db"
+    mkdir -p $(dirname $SHOUT_DATABASE)
 
     echo "[$(date)] shout starting up (pid $$)"
-    echo $$ > $pidfile
     exec chpst -u vcap:vcap \
-         sbcl --script /var/vcap/packages/shout/run.cl
+         sbcl --script /var/vcap/packages/shout/run.lisp
     ;;
 
   stop)
@@ -49,7 +49,7 @@ case $1 in
       sleep 0.1
       n=$(( $n - 1 ))
     done
-    rm -f $pidfile
+    rm -f $PID_FILE
     ;;
 
   *)
