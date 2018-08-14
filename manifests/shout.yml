@@ -12,8 +12,14 @@ instance_groups:
   - name: shout
     release: shout
     properties:
-      slack:
-        webhook: ((slack_webhook))
+      rules: |
+        ((set webhook "...")
+         (for *
+              (when *
+                (slack :webhook (value webhook)
+                       :text "$topic is $status"
+                       :color (if ok? "good" "danger")
+                       :attach (if link "$message <$link>" "$message")))))
 
 update:
   canaries: 1
@@ -21,9 +27,6 @@ update:
   max_in_flight: 1
   serial: true
   update_watch_time: 1000-60000
-
-variables:
-  - name: slack_webhook
 
 stemcells:
 - alias: default
