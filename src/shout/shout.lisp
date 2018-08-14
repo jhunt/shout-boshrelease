@@ -504,8 +504,8 @@
 
   (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port port)))
 
-(defun scan (expiry)
-  (write-database "states.db" *states*)
+(defun scan (expiry dbfile)
+  (write-database dbfile *states*)
   (let ((deadline (- (unix-now) expiry)))
     (labels ((f (lst)
                 (if (not (null lst))
@@ -527,6 +527,9 @@
                  (dbfile *default-dbfile*)
                  (rules *default-rules*)
                  (expiry *default-expiry*))
+
+  (if (stringp port)
+      (setf port (parse-integer port)))
 
   (format t "reading database from file ~A~%" dbfile)
   (setf *states* (read-database dbfile))
@@ -554,5 +557,5 @@
 
   (format t "entering upkeep thread main loop...~%")
   (loop
-    (scan expiry)
+    (scan expiry dbfile)
     (sleep 60)))

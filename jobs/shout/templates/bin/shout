@@ -25,10 +25,12 @@ case $1 in
     export SHOUT_RULES="/var/vcap/jobs/shout/config/shout.rules"
     export SHOUT_DATABASE="/var/vcap/store/shout/shout.db"
     mkdir -p $(dirname $SHOUT_DATABASE)
+    chown -R vcap:vcap $(dirname $SHOUT_DATABASE)
 
     echo "[$(date)] shout starting up (pid $$)"
+    cd /var/vcap/packages/shout/
     exec chpst -u vcap:vcap \
-         sbcl --script /var/vcap/packages/shout/run.lisp
+         sbcl --script run.lisp
     ;;
 
   stop)
