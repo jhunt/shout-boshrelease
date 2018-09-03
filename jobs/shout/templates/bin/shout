@@ -2,7 +2,6 @@
 set -eu
 mkdir -p /var/vcap/sys/log/shout
 exec >> /var/vcap/sys/log/shout/shout.log 2>&1
-export PATH=$PATH:/var/vcap/packages/sbcl/bin
 
 export PID_FILE=/var/vcap/sys/run/shout/shout.pid
 pids=
@@ -17,20 +16,19 @@ case $1 in
       exit 1
     fi
 
-    echo "[$(date)] expanding quicklisp supporting libraries"
-    rm -rf ~vcap/quicklisp
-    tar -C ~vcap -xzf /var/vcap/packages/shout/quicklisp-bundle.tar.gz
-
     export SHOUT_PORT="<%= p('port') %>"
-    export SHOUT_RULES="/var/vcap/jobs/shout/config/shout.rules"
     export SHOUT_DATABASE="/var/vcap/store/shout/shout.db"
+    export SHOUT_IT_OUT_LOUD=yes
+    export SHOUT_LOG_LEVEL="<%= p('log-level') %>"
+    export SHOUT_OPS_CREDS="<%= p('ops.username') %>:<%= p('ops.password') %>"
+    export SHOUT_ADMIN_CREDS="<%= p('admin.username') %>:<%= p('admin.password') %>"
+
     mkdir -p $(dirname $SHOUT_DATABASE)
     chown -R vcap:vcap $(dirname $SHOUT_DATABASE)
 
     echo "[$(date)] shout starting up (pid $$)"
-    cd /var/vcap/packages/shout/
-    exec chpst -u vcap:vcap \
-         sbcl --script run.lisp
+    echo $$ > $PID_FILE
+    exec chpst -u vcap:vcap /var/vcap/packages/shout/bin/shout
     ;;
 
   stop)

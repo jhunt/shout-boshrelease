@@ -1,4 +1,5 @@
 #!/bin/bash
 set -eu
-mkdir -p $BOSH_INSTALL_TARGET
-cp shout/* $BOSH_INSTALL_TARGET/
+mkdir -p $BOSH_INSTALL_TARGET/bin
+cp shout/shout $BOSH_INSTALL_TARGET/bin/shout
+chmod 755 $BOSH_INSTALL_TARGET/bin/shout

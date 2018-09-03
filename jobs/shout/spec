@@ -1,17 +1,35 @@
 ---
 name: shout
 packages:
-  - sbcl
   - shout
 
 templates:
   bin/shout:          bin/shout
+  bin/post-start:     bin/post-start
   config/shout.rules: config/shout.rules
 
 properties:
   port:
     description: The TCP port to bind for incoming Shout! API requests.
     default: 7109
+
+  log-level:
+    description: How verbose should Shout! be in its logs?  Must be one of "none", "info", or "debug".
+    default: info
+
+  ops.username:
+    description: The username to use for operational access to the Shout! API
+    default: shouty
+  ops.password:
+    description: The password to require for operational access to the Shout! API
+    default: abouty
+
+  admin.username:
+    description: The username to use for administrative access to the Shout! API
+    default: admin
+  admin.password:
+    description: The password to require for administrative access to the Shout! API
+    default: sadmin
 
   rules:
     description: The Shout! notification dispatch rules.

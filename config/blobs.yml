@@ -1,7 +1,4 @@
-sbcl/sbcl-1.4.8.tar.bz2:
-  size: 6040563
-  object_id: 7d3fcf1a-e7a7-457c-4f2d-e7f587bdeb5e
-  sha: 851fb51a5303b7ff67018f14b6c66facc0e5d7cc
-shout/quicklisp-bundle.tar.gz:
-  size: 4046802
-  sha: f63a61cf027eeaf7622ea65d0b7151e96a12ca2b
+shout/shout:
+  size: 19169328
+  object_id: a6ce665c-ae14-4598-61ff-4c431bcd6acc
+  sha: 0950ebc9a737e98b50af3af506b308f37e203c6d

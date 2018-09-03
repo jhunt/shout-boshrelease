@@ -1,5 +1,0 @@
----
-name: sbcl
-dependencies: []
-files:
-  - sbcl/sbcl-1.4.8.tar.bz2

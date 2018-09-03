@@ -16,6 +16,7 @@ instance_groups:
         ((set webhook "...")
          (for *
               (when *
+                (remind 24 hours)
                 (slack :webhook (value webhook)
                        :text "$topic is $status"
                        :color (if ok? "good" "danger")

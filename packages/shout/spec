@@ -1,8 +1,5 @@
 ---
 name: shout
-dependencies:
-  - sbcl
-
+dependencies: []
 files:
-  - shout/**/*.lisp
-  - shout/quicklisp-bundle.tar.gz
+  - shout/shout
