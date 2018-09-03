@@ -1,0 +1,19 @@
+name: shout
+version: 0.1.0
+commit_hash: "5885341"
+uncommitted_changes: false
+jobs:
+- name: shout
+  version: a374906e192ec7fdfb18aebdc3c78437fd53b30e
+  fingerprint: a374906e192ec7fdfb18aebdc3c78437fd53b30e
+  sha1: 07c89dfcbb24113381efa34212bf6a28fd9d511e
+packages:
+- name: shout
+  version: 9f4c3e807225565bde79f53340293c451b8a0806
+  fingerprint: 9f4c3e807225565bde79f53340293c451b8a0806
+  sha1: 2653af8855de95d09b0555f9311e1103c87f1fc0
+  dependencies: []
+license:
+  version: bc026dbd2e576cc5bf2acbd3bfe10f626c3abba8
+  fingerprint: bc026dbd2e576cc5bf2acbd3bfe10f626c3abba8
+  sha1: 56f9d049ba6247aa3772efaf8af2977a759e544a
