@@ -1,7 +1,14 @@
 #!/bin/bash
-set -eu
+set -u
 
 echo "[$(date)] uploading rules to Shout!"
-curl -Lv -u "<%= p('admin.username') %>:<%= p('admin.password') %>" \
+curl --fail -Lv -u "<%= p('admin.username') %>:<%= p('admin.password') %>" \
   -X POST --data-binary @/var/vcap/jobs/shout/config/shout.rules \
   http://127.0.0.1:<%= p('port') %>/rules
+
+if [[ $? != 0 ]]; then
+	echo "[$(date)] failed to upload rules to Shout!; check the syntax of your rules file..."
+	exit $?
+fi
+
+exit 0
